@@ -31,7 +31,21 @@ module.exports =  {
             }
                        
         })
-        
+    },
+    getScorebyFilter(req,res,next){
+        console.log(req.params);
+        const Sport = req.params.sport;
+        const Day = req.params.Day;
+        var returnArr = []
+        database.query('select * from `match`',(err,data)=>{
+            if(data.length > 0){
+                data.forEach(each=>{
+                    const sportQuery = each.sportType.toUpperCase() , dayQuery = each.matchStartTime.toString().substr(4, 6)
+                    if(sportQuery == Sport && dayQuery == Day) returnArr.push(each)
+                })
+            }
+            res.send(returnArr)
+        })
         
     }
 }
